@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Arbitrum DAO Quest Board</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="page-shell">
+      <header class="hero">
+        <p class="eyebrow">Arbitrum Foundation · Weekly Digest</p>
+        <h1>DAO Quest Board</h1>
+        <p class="subtitle">
+          Turn your updates into a mini mission. Expand each topic, scan key details, and mark it
+          complete as you go.
+        </p>
+
+        <section class="progress-panel" aria-live="polite">
+          <div class="progress-copy">
+            <p class="progress-label">Progress</p>
+            <p class="progress-value">
+              <span id="completed-count">0</span>/<span id="total-count">0</span> completed
+            </p>
+          </div>
+          <div
+            class="progress-track"
+            role="progressbar"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="0"
+            id="progressbar"
+          >
+            <div class="progress-fill" id="progress-fill"></div>
+          </div>
+          <div class="wallet-row">
+            <button class="wallet-button" id="connect-wallet" type="button">
+              Connect Wallet
+            </button>
+            <p class="wallet-status" id="wallet-status">Not connected. Progress is local only.</p>
+          </div>
+        </section>
+      </header>
+
+      <section class="quest-list" id="quest-list"></section>
+    </main>
+
+    <template id="quest-template">
+      <article class="quest-card">
+        <button class="quest-toggle" type="button" aria-expanded="false">
+          <div class="quest-toggle-copy">
+            <p class="quest-kicker"></p>
+            <h2 class="quest-title"></h2>
+          </div>
+          <span class="chevron" aria-hidden="true">⌄</span>
+        </button>
+
+        <div class="quest-content" hidden>
+          <ul class="quest-points"></ul>
+          <a class="quest-link" target="_blank" rel="noreferrer noopener">Open source discussion ↗</a>
+          <button class="read-button" type="button">Mark as read</button>
+        </div>
+      </article>
+    </template>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.5/dist/ethers.umd.min.js"></script>
+    <script>
+      window.APP_CONFIG = {
+        supabaseUrl: window.localStorage.getItem('supabase_url') || '',
+        supabaseAnonKey: window.localStorage.getItem('supabase_anon_key') || ''
+      };
+    </script>
+    <script src="script.js"></script>
+  </body>
+</html>
