@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Arbitrum DAO Quest Board</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="page-shell">
+      <header class="hero">
+        <p class="eyebrow">Arbitrum Foundation · Weekly Digest</p>
+        <h1>DAO Quest Board</h1>
+        <p class="subtitle">
+          Turn your updates into a mini mission. Expand each topic, scan key details, and mark it
+          complete as you go.
+        </p>
+
+        <section class="progress-panel" aria-live="polite">
+          <div class="progress-copy">
+            <p class="progress-label">Progress</p>
+            <p class="progress-value"><span id="completed-count">0</span>/<span id="total-count">0</span> completed</p>
+          </div>
+          <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progressbar">
+            <div class="progress-fill" id="progress-fill"></div>
+          </div>
+          <button class="wallet-button" type="button" title="Coming in v1: sign-in with wallet to sync your progress.">
+            Connect Wallet (v1)
+          </button>
+        </section>
+      </header>
+
+      <section class="quest-list" id="quest-list"></section>
+    </main>
+
+    <template id="quest-template">
+      <article class="quest-card">
+        <button class="quest-toggle" type="button" aria-expanded="false">
+          <div class="quest-toggle-copy">
+            <p class="quest-kicker"></p>
+            <h2 class="quest-title"></h2>
+          </div>
+          <span class="chevron" aria-hidden="true">⌄</span>
+        </button>
+
+        <div class="quest-content" hidden>
+          <ul class="quest-points"></ul>
+          <a class="quest-link" target="_blank" rel="noreferrer noopener">Open source discussion ↗</a>
+          <button class="read-button" type="button">Mark as read</button>
+        </div>
+      </article>
+    </template>
+
+    <script src="script.js"></script>
+  </body>
+</html>
