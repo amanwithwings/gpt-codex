@@ -74,7 +74,7 @@ const completedCount = document.getElementById('completed-count');
 const totalCount = document.getElementById('total-count');
 const progressFill = document.getElementById('progress-fill');
 const progressbar = document.getElementById('progressbar');
-const connectWalletButton = document.getElementById('connect-wallet');
+const connectWalletButton = document.getElementById('connect-wallet') ?? document.querySelector('.wallet-button');
 const walletStatus = document.getElementById('wallet-status');
 
 const readState = new Set();
@@ -83,13 +83,19 @@ const buttonRegistry = new Map();
 let activeWallet = '';
 let supabaseClient = null;
 
-totalCount.textContent = String(questData.length);
+if (totalCount) {
+  totalCount.textContent = String(questData.length);
+}
 
 function shortAddress(address) {
   return `${address.slice(0, 6)}...${address.slice(-4)}`;
 }
 
 function setWalletStatus(message, tone = 'warn') {
+  if (!walletStatus) {
+    return;
+  }
+
   walletStatus.classList.remove('ok', 'warn', 'danger');
   walletStatus.classList.add(tone);
   walletStatus.textContent = message;
@@ -139,6 +145,14 @@ function setReadVisualState(questId) {
   ui.button.disabled = true;
 }
 
+function resetAllReadVisuals() {
+  buttonRegistry.forEach(({ card, button }) => {
+    card.classList.remove('is-read');
+    button.textContent = 'Mark as read';
+    button.disabled = false;
+  });
+}
+
 async function loadProgressFromSupabase() {
   if (!supabaseClient || !activeWallet) {
     return;
@@ -155,6 +169,7 @@ async function loadProgressFromSupabase() {
   }
 
   readState.clear();
+  resetAllReadVisuals();
   data.forEach((row) => {
     readState.add(row.quest_id);
     setReadVisualState(row.quest_id);
@@ -204,7 +219,6 @@ function renderQuests() {
     });
 
     buttonRegistry.set(quest.id, { card, button: readButton });
-
     questList.append(clone);
   });
 }
@@ -214,9 +228,15 @@ function syncProgress() {
   const total = questData.length;
   const progress = total === 0 ? 0 : Math.round((completed / total) * 100);
 
-  completedCount.textContent = String(completed);
-  progressFill.style.width = `${progress}%`;
-  progressbar.setAttribute('aria-valuenow', String(progress));
+  if (completedCount) {
+    completedCount.textContent = String(completed);
+  }
+  if (progressFill) {
+    progressFill.style.width = `${progress}%`;
+  }
+  if (progressbar) {
+    progressbar.setAttribute('aria-valuenow', String(progress));
+  }
 }
 
 async function connectWallet() {
@@ -250,7 +270,11 @@ async function connectWallet() {
   }
 }
 
-connectWalletButton.addEventListener('click', connectWallet);
+if (connectWalletButton) {
+  connectWalletButton.addEventListener('click', connectWallet);
+}
 
-renderQuests();
-syncProgress();
+if (questList && questTemplate) {
+  renderQuests();
+  syncProgress();
+}
